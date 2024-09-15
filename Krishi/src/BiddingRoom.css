@@ -1,0 +1,103 @@
+.bidding-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .bidding-window {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+  }
+  
+  .bid-bubble {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 60%;
+  }
+  
+  .my-bid {
+    background-color: #dcf8c6;
+    align-self: flex-end;  /* Right align for current user */
+    text-align: right;
+    margin-left: auto;   /* Push it all the way to the right */
+    margin-right: 0;     /* Ensure no right margin */
+  }
+  
+  .other-bid {
+    background-color: #fff;
+    align-self: flex-start;  /* Left align for other user */
+    margin-left: 0;      /* Ensure no left margin */
+  }
+  
+  .bidding-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+  
+  .bidding-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .put-bid, .close-bid {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100px;
+    margin: 0 10px;
+  }
+  
+  .put-bid:hover {
+    background-color: #0056b3;
+  }
+  
+  .close-bid {
+    background-color: #ff4d4d;
+  }
+  
+  .close-bid:hover {
+    background-color: #c0392b;
+  }
+  
+  .clear-chat {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 120px;
+  }
+  
+  .clear-chat:hover {
+    background-color: #ec971f;
+  }
+  

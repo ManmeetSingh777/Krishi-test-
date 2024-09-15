@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { database } from '../firebaseConfig';  // Import the Firebase database
-import { ref, push, onValue } from "firebase/database"; // Import specific database functions
-import { useLocation } from 'react-router-dom'; // For URL-based roles
-import './Chat.css'; // Add CSS for styling
+import { database } from '../firebaseConfig';  
+import { ref, push, onValue, remove } from "firebase/database"; // Add remove to clear messages
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import './Chat.css';
 
 const Chat = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const sender = params.get('role') || "guest";  // Default to "guest" if no role is provided
+  const currentUserRole = params.get('role') || "guest";  
+  const navigate = useNavigate(); // Initialize navigation
 
   // Fetching chat messages from Firebase
   useEffect(() => {
-    const messagesRef = ref(database, 'chat');  // Use the ref() function from Firebase
+    const messagesRef = ref(database, 'chat');  
     onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
-      console.log("Fetched messages:", data);  // Log the fetched data for debugging
       const chatMessages = [];
       for (let id in data) {
         chatMessages.push(data[id]);
@@ -29,22 +28,42 @@ const Chat = () => {
   // Sending a new message
   const sendMessage = () => {
     if (message.trim()) {
-      const messagesRef = ref(database, 'chat');  // Use ref() correctly
-      console.log("Sending message:", message);  // Log the message being sent
+      const messagesRef = ref(database, 'chat');  
       push(messagesRef, {
         message,
-        sender: sender,  // Dynamically use the sender from the URL
+        sender: currentUserRole,  
         timestamp: new Date().toLocaleString()
       });
-      setMessage(''); // Clear input after sending
+      setMessage(''); 
     }
+  };
+
+  // Clearing all chat messages
+  const clearChat = () => {
+    if (window.confirm('Are you sure you want to clear the chat?')) {
+      const chatRef = ref(database, 'chat');
+      remove(chatRef);  // Clears all chat messages
+    }
+  };
+
+  // Start bidding redirection
+  const startBidding = () => {
+    navigate('/bidding?role=' + currentUserRole);  // Redirect to bidding page with role
   };
 
   return (
     <div className="chat-container">
+      <div className="chat-header">
+        <h2>Buyer-Farmer Chat</h2>
+        <button className="start-bidding" onClick={startBidding}>Start Bidding</button>
+        <button className="clear-chat" onClick={clearChat}>Clear Chat</button>
+      </div>
       <div className="chat-window">
         {messages.map((msg, index) => (
-          <div key={index} className={`chat-bubble ${msg.sender === "buyer" ? "buyer-bubble" : "farmer-bubble"}`}>
+          <div 
+            key={index} 
+            className={`chat-bubble ${msg.sender === currentUserRole ? "my-message" : "other-message"}`}
+          >
             <strong>{msg.sender}</strong>: {msg.message} <br />
             <small>{msg.timestamp}</small>
           </div>
